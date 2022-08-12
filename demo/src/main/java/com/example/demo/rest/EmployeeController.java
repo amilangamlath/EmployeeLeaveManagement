@@ -32,7 +32,13 @@ public class EmployeeController {
         long start = System.currentTimeMillis();
         logger.info("Start Method saveEmployee ", employee.getFname(),employee.getEpfNo());
 
-        return ResponseEntity.status(200).body(employeeService.saveEmployee(employee));
+        Employee employeeObj = null;
+        try{
+           employeeObj = employeeService.saveEmployee(employee);
+        }catch (Exception e){
+            logger.error("Method saveEmployee = {}", e);
+        }
+        return ResponseEntity.status(200).body(employeeObj);
     }
 
     @GetMapping("/getEmployees")
@@ -51,23 +57,48 @@ public class EmployeeController {
     @GetMapping("/findEmployee/{id}")
     public ResponseEntity<Employee> findEmployee(@PathVariable("id") Long id) throws EmployeeNotFoundException {
         long start = System.currentTimeMillis();
-        logger.info("Start Method getEmployees ");
+        logger.info("Start Method findEmployee ");
+
+        Employee employee = null;
+        try{
+           employee = employeeService.findEmployee(id);
+        }catch (Exception e){
+            logger.error("Method findEmployee = {}", e);
+        }
 
         Duration duration = Duration.ofMillis(System.currentTimeMillis() - start);
         logger.info("End Method findEmployee | response={} | duration={}:{}:{}:{}", duration.toHours(),
                 duration.toMinutes(), duration.getSeconds(), duration.toMillis());
 
-        return ResponseEntity.status(200).body(employeeService.findEmployee(id));
+        return ResponseEntity.status(200).body(employee);
     }
 
     @GetMapping("/deleteEmplyee/{id}")
-    public void deleteEmployee(@PathVariable("id") Long id){
+    public String deleteEmployee(@PathVariable("id") Long id){
+        logger.info("Start Method deleteEmployee ");
+        try{
         employeeService.deleteEmployee(id);
+        }catch (Exception e){
+            logger.error("Method deleteEmployee = {}", e);
+        }
+
+        return "Deleted.!";
     }
 
     @PutMapping("/updateEmployee/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long id, @RequestBody Employee employee) throws EmployeeNotFoundException {
+        long start = System.currentTimeMillis();
+        logger.info("Start Method updateEmployee ");
 
-        return ResponseEntity.status(200).body(employeeService.updateEmployee(id, employee));
+        Employee employeeObj = null;
+        try{
+            employeeObj = employeeService.updateEmployee(id, employee);
+        }catch (Exception e){
+            logger.error("Method findEmployee = {}", e);
+        }
+        Duration duration = Duration.ofMillis(System.currentTimeMillis() - start);
+        logger.info("End Method findEmployee | response={} | duration={}:{}:{}:{}", duration.toHours(),
+                duration.toMinutes(), duration.getSeconds(), duration.toMillis());
+        return ResponseEntity.status(200).body(employeeObj);
     }
 }

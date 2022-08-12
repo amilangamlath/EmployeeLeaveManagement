@@ -27,9 +27,18 @@ public class LeaveApplicationController {
     @PostMapping("/applyLeave")
     public ResponseEntity<LeaveApplication> applyLeave(@Valid @RequestBody LeaveApplication leaveApplication){
         long start = System.currentTimeMillis();
-        logger.info("Start Method saveEmployee ", leaveApplication.getEpfNo(),leaveApplication.getDays());
+        logger.info("Start Method applyLeave ", leaveApplication.getEpfNo(),leaveApplication.getDays());
 
-        return ResponseEntity.status(200).body(leaveApplicationService.saveApplication(leaveApplication));
+        LeaveApplication leaveApplicationObj = null;
+        try{
+            leaveApplicationObj = leaveApplicationService.saveApplication(leaveApplication);
+        }catch (Exception e){
+            logger.error("Method applyLeave = {}", e);
+        }
+        Duration duration = Duration.ofMillis(System.currentTimeMillis() - start);
+        logger.info("End Method findEmployee | response={} | duration={}:{}:{}:{}", duration.toHours(),
+                duration.toMinutes(), duration.getSeconds(), duration.toMillis());
+        return ResponseEntity.status(200).body(leaveApplicationObj);
     }
 
     @PutMapping("/approveLeave/{applicationId}/{user}")
@@ -37,7 +46,16 @@ public class LeaveApplicationController {
         long start = System.currentTimeMillis();
         logger.info("Start Method approveLeave ", applicationId, user);
 
-        return ResponseEntity.status(200).body(leaveApplicationService.approveLeave(applicationId, user));
+        LeaveApplication leaveApplicationObj = null;
+        try{
+            leaveApplicationObj = leaveApplicationService.approveLeave(applicationId, user);
+        }catch (Exception e){
+            logger.error("Method approveLeave = {}", e);
+        }
+        Duration duration = Duration.ofMillis(System.currentTimeMillis() - start);
+        logger.info("End Method findEmployee | response={} | duration={}:{}:{}:{}", duration.toHours(),
+                duration.toMinutes(), duration.getSeconds(), duration.toMillis());
+        return ResponseEntity.status(200).body(leaveApplicationObj);
     }
 
     @PutMapping("/rejectLeaveApplication/{applicationId}/{user}")
@@ -45,7 +63,16 @@ public class LeaveApplicationController {
         long start = System.currentTimeMillis();
         logger.info("Start Method rejectLeaveApplication ", applicationId, user);
 
-        return ResponseEntity.status(200).body(leaveApplicationService.rejectLeaveApplication(applicationId, user));
+        LeaveApplication leaveApplicationObj = null;
+        try{
+            leaveApplicationObj = leaveApplicationService.rejectLeaveApplication(applicationId, user);
+        }catch (Exception e){
+            logger.error("Method rejectLeaveApplication = {}", e);
+        }
+        Duration duration = Duration.ofMillis(System.currentTimeMillis() - start);
+        logger.info("End Method findEmployee | response={} | duration={}:{}:{}:{}", duration.toHours(),
+                duration.toMinutes(), duration.getSeconds(), duration.toMillis());
+        return ResponseEntity.status(200).body(leaveApplicationObj);
     }
 
     @GetMapping("/getLeaves/{startingDate}/{endingDate}")

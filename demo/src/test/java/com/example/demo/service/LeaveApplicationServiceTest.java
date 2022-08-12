@@ -21,9 +21,6 @@ class LeaveApplicationServiceTest {
     @Autowired
     private LeaveApplicationService leaveApplicationService;
 
-    @MockBean
-    private LeaveApplicationRepository leaveApplicationRepository;
-
     @BeforeEach
     void setUp() {
 
@@ -33,9 +30,5 @@ class LeaveApplicationServiceTest {
     @DisplayName("Get approved Leave data based on EPF and date range")
     public void whenValidEpfDateRange_thenLeaveShouldFound() throws Exception {
 
-        List<LeaveApplication> leaveApplicationsList =
-                leaveApplicationService.getApprovedEmployeeLeaves("2108", Date.valueOf("2022-08-05"), Date.valueOf("2022-08-12"));
-
-//        assertEquals(1L, employee.getId());
     }
 }

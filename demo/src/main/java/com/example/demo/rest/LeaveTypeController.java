@@ -27,7 +27,16 @@ public class LeaveTypeController {
         long start = System.currentTimeMillis();
         logger.info("Start Method addLeaveType ", leaveType.getType(),leaveType.getNeedApprovalLevels());
 
-        return ResponseEntity.status(200).body(leaveTypeService.addLeaveType(leaveType));
+        LeaveType leaveTypePbj = null;
+        try{
+            leaveTypePbj = leaveTypeService.addLeaveType(leaveType);
+        }catch (Exception e){
+            logger.error("Method addLeaveType = {}", e);
+        }
+        Duration duration = Duration.ofMillis(System.currentTimeMillis() - start);
+        logger.info("End Method findEmployee | response={} | duration={}:{}:{}:{}", duration.toHours(),
+                duration.toMinutes(), duration.getSeconds(), duration.toMillis());
+        return ResponseEntity.status(200).body(leaveTypePbj);
 
     }
 
@@ -45,11 +54,17 @@ public class LeaveTypeController {
     }
 
     @GetMapping("/getLeaveType/{type}")
-    public ResponseEntity<LeaveType> getLeaveType(@PathVariable("leaveType") int type){
+    public ResponseEntity<LeaveType> getLeaveType(@PathVariable("type") int type){
         long start = System.currentTimeMillis();
         logger.info("Start Method getLeaveType ");
 
-        LeaveType leaveTp = leaveTypeService.getLeaveTypeByType(type);
+        LeaveType leaveTp = null;
+
+        try{
+            leaveTp = leaveTypeService.getLeaveTypeByType(type);
+        }catch (Exception e){
+            logger.error("Method getLeaveType = {}", e);
+        }
 
         Duration duration = Duration.ofMillis(System.currentTimeMillis() - start);
         logger.info("End Method getLeaveType | response={} | duration={}:{}:{}:{}", duration.toHours(),

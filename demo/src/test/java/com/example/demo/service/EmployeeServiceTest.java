@@ -19,28 +19,17 @@ class EmployeeServiceTest {
     @Autowired
     private EmployeeService employeeService;
 
-    @MockBean
-    private EmployeeRepository employeeRepository;
-
     @BeforeEach
     void setUp() {
-        Employee employee = Employee.builder()
-                .id(1L)
-                .epfNo("2100")
-                .fname("Ann").lname("Bravo").department("HRM").contactNo("0777749302").address("Jaffna").authorityLevel(1)
-                .build();
 
-        Mockito.when(employeeRepository.findById(1L).get()).thenReturn(employee);
     }
 
     @Test
     @DisplayName("Get data based on id")
     public void whenValidEmployeeId_thenEmployeeShouldFound() throws EmployeeNotFoundException {
 
-//        Long empId = 1L;
-
-        Employee employee = employeeService.findEmployee(1L);
-
-        assertEquals(1L, employee.getId());
+        Employee employee = employeeService.findEmployee(2L);
+        System.out.println("Test employee"+employee.toString());
+        assertEquals(2L, employee.getId());
     }
 }
